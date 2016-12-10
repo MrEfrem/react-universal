@@ -17,7 +17,7 @@ Compile app for deployment in folder `build`.
 
 ### `npm run prod`
 
-Run the app in production mode.
+Run the app in then production mode.
 
 
 Tips:

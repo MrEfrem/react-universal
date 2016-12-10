@@ -1,7 +1,6 @@
 // @flow
 import React from 'react'
 import ReactDOM from 'react-dom'
-// @flow
 import { createStore, compose } from 'redux'
 import { Provider } from 'react-redux'
 import { enhanceStore } from 'redux-fly'

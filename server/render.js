@@ -8,12 +8,14 @@ import { Provider } from 'react-redux'
 import config from '../config'
 import qs from 'qs'
 import { fetchCounter } from './api'
+import styleSheet from 'styled-components/lib/models/StyleSheet'
 
-const getTemplate = (markup, preloadedState) => {
+const getTemplate = (markup, preloadedState, styles) => {
   const pathTemplate = process.env.NODE_ENV === 'production'
     ? config.path.buildTemplate
     : config.path.rawTemplate
-  const template = fs.readFileSync(pathTemplate, 'utf-8')
+  let template = fs.readFileSync(pathTemplate, 'utf-8')
+  template = template.replace('<style></style>', `<style>${styles}</style>`)
   const replaces = [
     `<div id="root">${markup}</div>`,
     `<script>window.__PRELOADED_STATE__=${serialize(preloadedState)};</script>`,
@@ -63,10 +65,11 @@ export default function* () {
       <App/>
     </Provider>
   )
+  const styles = styleSheet.rules().map(rule => rule.cssText).join('\n')
 
   // Grab the initial state from our Redux store
   const finalState = store.getState()
 
   // Send the rendered page back to the client
-  this.body = getTemplate(markup, finalState)
+  this.body = getTemplate(markup, finalState, styles)
 }

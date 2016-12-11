@@ -4,7 +4,6 @@ import InterpolateHtmlPlugin from 'react-dev-utils/InterpolateHtmlPlugin'
 import config from './index'
 import getClientEnvironment from './env'
 import ManifestPlugin from 'webpack-manifest-plugin'
-import SubresourceIntegrityPlugin from 'webpack-subresource-integrity'
 
 // Get environment variables to inject into our app.
 const env = getClientEnvironment(config.publicUrl)
@@ -88,9 +87,6 @@ const webpackConfig = {
     // having to parse `index.html`.
     new ManifestPlugin({
       fileName: 'asset-manifest.json'
-    }),
-    new SubresourceIntegrityPlugin({
-      hashFuncNames: ['sha256', 'sha384']
     })
   ],
   resolve: {

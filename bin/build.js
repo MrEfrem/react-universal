@@ -152,7 +152,8 @@ function build(previousSizeMap) {
     printFileSizes(stats, previousSizeMap)
     global.console.log()
 
-    const homepagePath = require(config.path.packageJSON).homepage
+    const appPackage  = require(config.path.packageJSON)
+    const homepagePath = appPackage.homepage
     if (homepagePath && homepagePath.indexOf('.github.io/') !== -1) {
       // "homepage": "http://user.github.io/project"
       global.console.log('The project was built assuming it is hosted at ' + chalk.green(config.webpack.publicPath) + '.')
@@ -160,22 +161,25 @@ function build(previousSizeMap) {
       global.console.log()
       global.console.log('The ' + chalk.cyan('build') + ' folder is ready to be deployed.')
       global.console.log('To publish it at ' + chalk.green(homepagePath) + ', run:')
-      global.console.log()
-      if (useYarn) {
-        global.console.log('  ' + chalk.cyan('yarn') +  ' add --dev gh-pages')
-      } else {
-        global.console.log('  ' + chalk.cyan('npm') +  ' install --save-dev gh-pages')
+      // If script deploy has been added to package.json, skip the instructions
+      if (typeof appPackage.scripts.deploy === 'undefined') {
+        global.console.log()
+        if (useYarn) {
+          global.console.log('  ' + chalk.cyan('yarn') +  ' add --dev gh-pages')
+        } else {
+          global.console.log('  ' + chalk.cyan('npm') +  ' install --save-dev gh-pages')
+        }
+        global.console.log()
+        global.console.log('Add the following script in your ' + chalk.cyan('package.json') + '.')
+        global.console.log()
+        global.console.log('    ' + chalk.dim('// ...'))
+        global.console.log('    ' + chalk.yellow('"scripts"') + ': {')
+        global.console.log('      ' + chalk.dim('// ...'))
+        global.console.log('      ' + chalk.yellow('"deploy"') + ': ' + chalk.yellow('"npm run build&&gh-pages -d build"'))
+        global.console.log('    }')
+        global.console.log()
+        global.console.log('Then run:')
       }
-      global.console.log()
-      global.console.log('Add the following script in your ' + chalk.cyan('package.json') + '.')
-      global.console.log()
-      global.console.log('    ' + chalk.dim('// ...'))
-      global.console.log('    ' + chalk.yellow('"scripts"') + ': {')
-      global.console.log('      ' + chalk.dim('// ...'))
-      global.console.log('      ' + chalk.yellow('"deploy"') + ': ' + chalk.yellow('"npm run build&&gh-pages -d build"'))
-      global.console.log('    }')
-      global.console.log()
-      global.console.log('Then run:')
       global.console.log()
       global.console.log('  ' + chalk.cyan(useYarn ? 'yarn' : 'npm') +  ' run deploy')
       global.console.log()

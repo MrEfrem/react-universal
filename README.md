@@ -1,4 +1,4 @@
-# Redux Universal boilerplate
+# React Universal boilerplate
 
 ## Available Scripts
 
